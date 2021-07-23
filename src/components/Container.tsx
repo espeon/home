@@ -1,4 +1,4 @@
-import { Flex, useColorMode, FlexProps } from '@chakra-ui/react'
+import { Flex, useColorMode, FlexProps} from '@chakra-ui/react'
 
 export const Container = (props: FlexProps) => {
   const { colorMode } = useColorMode()
@@ -13,6 +13,7 @@ export const Container = (props: FlexProps) => {
       justifyContent="flex-start"
       bg={bgColor[colorMode]}
       color={color[colorMode]}
+      transition="box-shadow 0.2s, background-color 0.2s"
       {...props}
     />
   )

@@ -1,56 +1,57 @@
 import {
-  Link as ChakraLink,
+  Center,
+  Flex,
+  Heading,
+  Box,
   Text,
-  Code,
-  List,
-  ListIcon,
-  ListItem,
-} from '@chakra-ui/react'
-import { CheckCircleIcon, LinkIcon } from '@chakra-ui/icons'
-
-import { Hero } from '../components/Hero'
-import { Container } from '../components/Container'
-import { Main } from '../components/Main'
-import { DarkModeSwitch } from '../components/DarkModeSwitch'
-import { CTA } from '../components/CTA'
-import { Footer } from '../components/Footer'
+  Image,
+} from "@chakra-ui/react";
+import { Container } from "../components/Container";
+import ProjectCard from "../components/ProjectCard";
+import { Header } from "../components/Header";
+import { Footer } from "../components/Footer";
+import IconRow from "../components/IconRow";
 
 const Index = () => (
-  <Container height="100vh">
-    <Hero />
-    <Main>
-      <Text>
-        Example repository of <Code>Next.js</Code> + <Code>chakra-ui</Code> +{' '}
-        <Code>typescript</Code>.
-      </Text>
-
-      <List spacing={3} my={0}>
-        <ListItem>
-          <ListIcon as={CheckCircleIcon} color="green.500" />
-          <ChakraLink
-            isExternal
-            href="https://chakra-ui.com"
-            flexGrow={1}
-            mr={2}
+  <>
+    <Container minHeight={{ base: "100vh", lg: "100vh"}} height={{ base: "auto", lg: "100vh"}} width="100%">
+      <Box h="10%" w="85%" pt={{ base: "4", lg: "0"}}>
+        <Header />
+      </Box>
+      <Center height={{ base: "100%", lg: "78%"}} w="85%" maxHeight="100%">
+        <Flex direction={{ base: "column", lg: "row" }}>
+          <Box
+            w={{ base: "85vw", lg: "40vw", xxl: "800px" }}
+            minW={{ base: "95%", lg: "50%" }}
+            h={{ base: "100%", lg: "10%" }}
+            textAlign="left"
           >
-            Chakra UI <LinkIcon />
-          </ChakraLink>
-        </ListItem>
-        <ListItem>
-          <ListIcon as={CheckCircleIcon} color="green.500" />
-          <ChakraLink isExternal href="https://nextjs.org" flexGrow={1} mr={2}>
-            Next.js <LinkIcon />
-          </ChakraLink>
-        </ListItem>
-      </List>
-    </Main>
+            <Image
+              boxSize="180"
+              borderRadius="full"
+              mb="4"
+              mt={{ base: "8", lg: "0" }}
+              src="https://pcdn.piiojs.com/i/tkkjic/wp,1,bhc,1,vw,256,vh,256/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F22222885%3Fv%3D4"
+            />
+            <Heading w="fit-content" h="25%" size="2xl" mb="2" fontWeight="medium">
+              hey,👋🏼 i'm emma!
+            </Heading>
+            <IconRow />
+          </Box>
+          <Box w="max" minW={{ base: "95%", lg: "50%" }}>
+            <Heading fontWeight="medium">current projects</Heading>
+            <Text> look elsewhere for good code</Text>
+            <ProjectCard title="sakura" subtitle="an anime organizer and viewer (aggregates and displays local and external anime)"/>
+            <ProjectCard title="redir" subtitle="super simple serverless (for Vercel) link shortener"/>
+            <ProjectCard title="maki" subtitle="weird discord bot"/>
+          </Box>
+        </Flex>
+      </Center>
+      <Box height={{ base: "max", lg: "11%"}} minW="85%" maxHeight="100%" mt={{ base: "24", lg: "0"}} mb={{ base: "6", lg: "0"}} alignItems="center">
+        <Footer />
+      </Box>
+    </Container>
+  </>
+);
 
-    <DarkModeSwitch />
-    <Footer>
-      <Text>Next ❤️ Chakra</Text>
-    </Footer>
-    <CTA />
-  </Container>
-)
-
-export default Index
+export default Index;

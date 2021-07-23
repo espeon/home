@@ -4,7 +4,10 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "export": "next export",
+    "deploy": "yarn build && yarn export && mv out/index.html out/200.html && copy CNAME out/CNAME && surge out",
+    "deploy-windows": "yarn build && yarn export && @powershell mv out/index.html out/200.html && @powershell copy CNAME out/CNAME && surge out"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.5",
@@ -12,16 +15,20 @@
     "@chakra-ui/theme-tools": "1.1.2",
     "@emotion/react": "11.1.5",
     "@emotion/styled": "11.1.5",
+    "@next/bundle-analyzer": "^11.0.1",
     "framer-motion": "^4.0.3",
     "next": "latest",
+    "preact": "^10.5.14",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-icons": "^4.2.0",
+    "swr": "^0.5.6"
   },
   "devDependencies": {
     "@types/node": "^14.6.0",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
-    "typescript": "4.2.3"
+    "typescript": "^4"
   },
   "license": "MIT"
 }
