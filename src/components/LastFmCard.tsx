@@ -43,7 +43,7 @@ export const LastFmCard = (props: FlexProps) => {
       boxShadow="lg"
     >
       <Flex>
-        <Box alignContent="center" position="relative" bg={`https://pcdn.piiojs.com/i/demo/wp,1,bhc,1,vw,180,vh,180/${encodeURIComponent(cover)}`}>
+        <Box alignContent="center" position="relative">
           <Flex
             bg="gray.700"
             position="absolute"
@@ -68,7 +68,7 @@ export const LastFmCard = (props: FlexProps) => {
             }
             
           </Flex>
-          <Image minH="24" h="24" minW="24" borderRadius="lg" boxShadow="lg" src={`https://pcdn.piiojs.com/i/demo/wp,1,bhc,1,vw,180,vh,180/${encodeURIComponent(cover)}`} />
+          <Image minH="24" h="24" minW="24" borderRadius="lg" boxShadow="lg" src={`https://pcdn.piiojs.com/i/demo/wp,1,bhc,1,vw,360,vh,360/${encodeURIComponent(cover)}`} />
         </Box>
         <Flex justifyContent="center" alignItems="start" direction="column">
           <Text mx="4" mt="1" w="72" isTruncated>
