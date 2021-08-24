@@ -1,14 +1,15 @@
 import { Flex } from "@chakra-ui/react";
 import { IoLogoTwitch } from "react-icons/io";
-import { FaGithub, FaTwitch, FaTwitter } from "react-icons/fa";
+import { FaGithub, FaTwitch, FaTwitter, FaDiscord } from "react-icons/fa";
 import { IconType } from "react-icons/lib";
 import { Box } from "@chakra-ui/react";
 
 const IconRow = () => {
   let icons = [
     { i: <FaGithub />, url: "https://github.com/kanbaru" },
-    { i: <FaTwitter />, url: "https://twitter.com/emmaischic" },
-    { i: <IoLogoTwitch />, url: "https://twitch.tv/emmaic" },
+    { i: <FaTwitter />, url: "https://twitter.com/natalielier" },
+    { i: <IoLogoTwitch />, url: "https://twitch.tv/natelier" },
+    { i: <FaDiscord />, url: "https://r.izu.moe/discord" },
   ];
   return (
     <Flex fontSize="2em" pt="2" pb="8" >
