@@ -31,7 +31,8 @@ const Index = () => (
               borderRadius="full"
               mb="4"
               mt={{ base: "8", lg: "0" }}
-              src="https://pcdn.piiojs.com/i/tkkjic/wp,1,bhc,1,vw,256,vh,256/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F22222885%3Fv%3D4"
+              //TODO: make image cdn
+              src="https://pcdn.piiojs.com/i/tkkjic/wp,1,bhc,1,vw,256,vh,256/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F22222885%3Fv%3D6"
             />
             <Heading w="fit-content" h="25%" size="2xl" mb="2" fontWeight="medium">
               hey,👋🏼 i'm natalie!
