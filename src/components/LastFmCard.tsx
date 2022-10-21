@@ -18,7 +18,7 @@ function fetcher(url) {
 }
 
 export const LastFmCard = (props: FlexProps) => {
-  const { data, error } = useSWR(`https://my.amii.moe/api/fm/`, fetcher, {
+  const { data, error } = useSWR(`https://92dcf4e8-4bd6-4a9e-a84b-9dd3987a599a.id.repl.co/api/fm/`, fetcher, {
     refreshInterval: 25000,
   });
   if (error) return null;
