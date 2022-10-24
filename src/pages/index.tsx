@@ -37,14 +37,8 @@ const Index = () => (
             <Heading w="fit-content" h="25%" size="2xl" mb="2" fontWeight="medium">
               hey,👋🏼 i'm natalie!
             </Heading>
+            <Heading fontWeight={"medium"} size="md" mb="2">i do cool internet things with computers.<br/> find me here:</Heading>
             <IconRow />
-          </Box>
-          <Box w="max" minW={{ base: "95%", lg: "50%" }}>
-            <Heading fontWeight="medium">current projects</Heading>
-            <Text> look elsewhere for good code</Text>
-            <ProjectCard title="sakura" subtitle="an anime organizer and viewer (aggregates and displays local and external anime)"/>
-            <ProjectCard title="redir" subtitle="super simple serverless (for Vercel) link shortener"/>
-            <ProjectCard title="maki" subtitle="weird discord bot"/>
           </Box>
         </Flex>
       </Center>
