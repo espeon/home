@@ -7,6 +7,7 @@ import {
   Heading,
   Image,
   Spacer,
+  SlideFade,
 } from "@chakra-ui/react";
 import { FaLastfm } from "react-icons/fa";
 import useSWR from "swr";
@@ -18,9 +19,13 @@ function fetcher(url) {
 }
 
 export const LastFmCard = (props: FlexProps) => {
-  const { data, error } = useSWR(`https://92dcf4e8-4bd6-4a9e-a84b-9dd3987a599a.id.repl.co/api/fm/`, fetcher, {
-    refreshInterval: 25000,
-  });
+  const { data, error } = useSWR(
+    `https://92dcf4e8-4bd6-4a9e-a84b-9dd3987a599a.id.repl.co/api/fm/`,
+    fetcher,
+    {
+      refreshInterval: 25000,
+    }
+  );
   if (error) return null;
 
   if (data == undefined) return null;
@@ -35,54 +40,66 @@ export const LastFmCard = (props: FlexProps) => {
     ]["#text"];
 
   return (
-    <Box
-    w={{ base: "85vw", lg: "auto" }}
-      h="24"
-      bg={useColorModeValue("gray.200", "gray.800")}
-      borderRadius="xl"
-      boxShadow="lg"
-    >
-      <Flex>
-        <Box alignContent="center" position="relative">
-          <Flex
-            bg="gray.700"
-            position="absolute"
-            mt="2"
-            h="7"
-            w="14"
-            borderEndRadius="lg"
-            opacity="0.8"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Box mr="1">
-              <Link href="https://last.fm/user/kanb">
-                <a>
-                  <FaLastfm fontSize="1.25rem" color="red" />
-                </a>
-              </Link>
-            </Box>
-            {data.recenttracks.track[0]["@attr"] && data.recenttracks.track[0]["@attr"].nowplaying == "true"?
-                <IoMdPlay fontSize="1rem" />:
+    <SlideFade in={data}>
+      <Box
+        w={{ base: "85vw", lg: "auto" }}
+        h="24"
+        bg={useColorModeValue("gray.200", "gray.800")}
+        borderRadius="xl"
+        boxShadow="lg"
+      >
+        <Flex>
+          <Box alignContent="center" position="relative">
+            <Flex
+              bg="gray.700"
+              position="absolute"
+              mt="2"
+              h="7"
+              w="14"
+              borderEndRadius="lg"
+              opacity="0.8"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Box mr="1">
+                <Link href="https://last.fm/user/kanb">
+                  <a>
+                    <FaLastfm fontSize="1.25rem" color="red" />
+                  </a>
+                </Link>
+              </Box>
+              {data.recenttracks.track[0]["@attr"] &&
+              data.recenttracks.track[0]["@attr"].nowplaying == "true" ? (
+                <IoMdPlay fontSize="1rem" />
+              ) : (
                 <IoMdPause fontSize="1rem" />
-            }
-            
+              )}
+            </Flex>
+            <Image
+              minH="24"
+              h="24"
+              minW="24"
+              borderRadius="lg"
+              boxShadow="lg"
+              src={`https://pcdn.piiojs.com/i/demo/wp,1,bhc,1,vw,360,vh,360/${encodeURIComponent(
+                cover
+              )}`}
+            />
+          </Box>
+          <Flex justifyContent="center" alignItems="start" direction="column">
+            <Text mx="4" mt="1" w={{ base: "56vw", lg: "72" }} isTruncated>
+              {musictitle}
+            </Text>
+            <Text mx="4" mt="1" w={{ base: "56vw", lg: "72" }} isTruncated>
+              {artist}
+            </Text>
+            <Text mx="4" mt="1" w={{ base: "56vw", lg: "72" }} isTruncated>
+              {album}
+            </Text>
           </Flex>
-          <Image minH="24" h="24" minW="24" borderRadius="lg" boxShadow="lg" src={`https://pcdn.piiojs.com/i/demo/wp,1,bhc,1,vw,360,vh,360/${encodeURIComponent(cover)}`} />
-        </Box>
-        <Flex justifyContent="center" alignItems="start" direction="column">
-          <Text mx="4" mt="1" w="72" isTruncated>
-            {musictitle}
-          </Text>
-          <Text mx="4" mt="1" w="72" isTruncated>
-            {artist}
-          </Text>
-          <Text mx="4" mt="1" w="72" isTruncated>
-            {album}
-          </Text>
         </Flex>
-      </Flex>
-    </Box>
+      </Box>
+    </SlideFade>
   );
 };
 export default LastFmCard;
