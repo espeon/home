@@ -1,11 +1,19 @@
+import { ChevronDownIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Flex,
-  FlexProps,
-  Spacer,
   Text,
+  Spacer,
   Box,
   Link as CLink,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Link,
+  Button,
+  background,
 } from "@chakra-ui/react";
+import { FaChevronCircleDown } from "react-icons/fa";
 import { DarkModeSwitch } from "./DarkModeSwitch";
 
 export const Header = () => (
@@ -19,7 +27,31 @@ export const Header = () => (
     >
       <Box>
         <CLink mr="12">home</CLink> <CLink mr="12">blog</CLink>{" "}
-        <CLink mr="12">cv</CLink>
+        <Menu>
+          <MenuButton as={CLink}>
+            cv <ChevronDownIcon mx='2px' />
+          </MenuButton>
+          <MenuList>
+            <MenuItem>
+              <CLink href="https://s3.natalie.sh/nano/cv.pdf" isExternal>
+                PDF <ExternalLinkIcon mb='4px' />
+              </CLink>
+            </MenuItem>
+            <MenuItem>
+              <CLink href="https://read.cv/nat" isExternal>
+                read.cv <ExternalLinkIcon mb='2px' />
+              </CLink>
+            </MenuItem>
+            <MenuItem>
+              <CLink
+                href="https://www.overleaf.com/read/kkhnkxdftmpm"
+                isExternal
+              >
+                LaTeX <ExternalLinkIcon mb='4px' />
+              </CLink>
+            </MenuItem>
+          </MenuList>
+        </Menu>
       </Box>
       <Spacer />
       <DarkModeSwitch />
