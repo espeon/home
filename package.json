@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "export": "next export",
-    "deploy": "yarn build && yarn export && mv out/index.html out/200.html && copy CNAME out/CNAME && surge out",
+    "deploy": "yarn build && yarn export && mv out/index.html out/200.html && cp CNAME out/CNAME && surge out",
     "deploy-windows": "yarn build && yarn export && @powershell mv out/index.html out/200.html && @powershell copy CNAME out/CNAME && surge out"
   },
   "dependencies": {
@@ -17,7 +17,7 @@
     "@emotion/styled": "11.1.5",
     "@next/bundle-analyzer": "^11.0.1",
     "framer-motion": "^4.0.3",
-    "next": "^12.3.1",
+    "next": "latest",
     "preact": "^10.5.14",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
