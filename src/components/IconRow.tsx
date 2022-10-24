@@ -6,7 +6,7 @@ import { Box } from "@chakra-ui/react";
 
 const IconRow = () => {
   let icons = [
-    { i: <FaGithub />, url: "https://github.com/kanbaru" },
+    { i: <FaGithub />, url: "https://github.com/espeon" },
     { i: <FaTwitter />, url: "https://twitter.com/nateliier" },
     { i: <IoLogoTwitch />, url: "https://twitch.tv/natelier" },
     { i: <FaDiscord />, url: "https://r.izu.moe/discord" },
