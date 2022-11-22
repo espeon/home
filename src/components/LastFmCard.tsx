@@ -87,13 +87,13 @@ export const LastFmCard = (props: FlexProps) => {
             />
           </Box>
           <Flex justifyContent="center" alignItems="start" direction="column">
-            <Text mx="4" mt="1" w={{ base: "56vw", lg: "72" }} isTruncated>
+            <Text mx="4" mt="1" w={{ base: "56vw", lg: "72" }} noOfLines={1}>
               {musictitle}
             </Text>
-            <Text mx="4" mt="1" w={{ base: "56vw", lg: "72" }} isTruncated>
+            <Text mx="4" mt="1" w={{ base: "56vw", lg: "72" }} noOfLines={1}>
               {artist}
             </Text>
-            <Text mx="4" mt="1" w={{ base: "56vw", lg: "72" }} isTruncated>
+            <Text mx="4" mt="1" w={{ base: "56vw", lg: "72" }} noOfLines={1}>
               {album}
             </Text>
           </Flex>
