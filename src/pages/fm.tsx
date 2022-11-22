@@ -30,7 +30,7 @@ export const LastFmCard = () => {
     url: null
   });
 
-  useEffect(() => {
+  useEffect(() => {t
     console.log("loaded");
     setUrl((url) => ({
       load: true,
