@@ -56,6 +56,7 @@ export const LastFmCard = (props: FlexProps) => {
               borderRadius="lg"
               boxShadow="dark-lg"
               src={cover}
+              fallback={bk_cover}
             />
           </Box>
           <Flex
