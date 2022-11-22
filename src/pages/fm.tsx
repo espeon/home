@@ -53,7 +53,7 @@ export const LastFmCard = (props: FlexProps) => {
               h="40vh"
               minW="40vh"
               borderRadius="lg"
-              boxShadow="lg"
+              boxShadow="dark-lg"
               src={`https://pcdn.piiojs.com/i/demo/wp,1,bhc,1,vw,560,vh,560/${encodeURIComponent(
                 cover
               )}`}
