@@ -11,6 +11,7 @@ import useSWR from "swr";
 import { useRouter } from "next/router";
 import { IoMdPause, IoMdPlay } from "react-icons/io";
 import { useEffect, useState } from "react";
+import { replace } from "lodash";
 
 function fetcher(url) {
   return fetch(url).then((r) => r.json());
@@ -21,17 +22,28 @@ const FM_KEY = "6f5ff9d828991a85bd78449a85548586";
 
 const isServer = () => typeof window === `undefined`;
 
-export const LastFmCard = (props: FlexProps) => {
-  if(typeof window === "undefined") return null;
-  const { query } = useRouter();
-  let [url, setUrl] = useState({load: false, url: query.user?`http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${query.user}&api_key=${FM_KEY}&length=1&format=json`:"https://92dcf4e8-4bd6-4a9e-a84b-9dd3987a599a.id.repl.co/api/fm/"})
-  const user = query.user
+export const LastFmCard = ({ query }) => {
+  if (typeof window === "undefined") return null;
+  let [url, setUrl] = useState({
+    load: false,
+    url: query.user
+      ? `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${query.user}&api_key=${FM_KEY}&length=1&format=json`
+      : `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=kanb&api_key=${FM_KEY}&length=1&format=json`,
+  });
+  const user = query.user;
 
-  useEffect(()=>{
-    setUrl((url) => ({load:true, url: `http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${query.user}&api_key=${FM_KEY}&length=1&format=json`, ...url}));
-  }, [])
+  useEffect(() => {
+    console.log("loaded");
+    if (!query.user && !url.load) {
+      console.log("set to balls")
+      setUrl((url) => ({
+        load: true,
+        url: `https://92dcf4e8-4bd6-4a9e-a84b-9dd3987a599a.id.repl.co/api/fm/`,
+      }));
+    }
+  }, []);
 
-  console.log(url.load, user)
+  console.log(url.load, user, url.url);
 
   const { data, error } = useSWR(url.url, fetcher, {
     refreshInterval: 25000,
@@ -44,10 +56,14 @@ export const LastFmCard = (props: FlexProps) => {
     return (
       <Center height="99vh">
         <Flex direction="column">
-        <Center>
-        <Image src="https://www.last.fm/static/images/marvin.05ccf89325af.png" maxW="10vw" mr={10} />
-        </Center>
-        <Text fontSize="3xl">last.fm user not found.</Text>
+          <Center>
+            <Image
+              src="https://www.last.fm/static/images/marvin.05ccf89325af.png"
+              maxW="10vw"
+              mr={10}
+            />
+          </Center>
+          <Text fontSize="3xl">last.fm user not found.</Text>
         </Flex>
       </Center>
     );
@@ -60,19 +76,31 @@ export const LastFmCard = (props: FlexProps) => {
     data &&
     data.recenttracks.track[0].image[
       data.recenttracks.track[0].image.length - 1
-    ]["#text"];
+    ]["#text"].replace("300x300", "3000x0");
 
   return (
     <Center height="99vh">
       <SlideFade in={data}>
         <Flex>
           <Box alignContent="center" position="relative">
-          {data.recenttracks.track[0]["@attr"] &&
-              data.recenttracks.track[0]["@attr"].nowplaying == "true" ? (
-                <IoMdPlay fontSize="1rem" />
-              ) : (
-                <IoMdPause fontSize="1rem" />
-              )}
+          <Flex
+              position="absolute"
+              mt="2"
+              h="10"
+              w="14"
+              borderEndRadius="lg"
+              opacity="0.8"
+              justifyContent="center"
+              alignItems="center"
+              boxShadow="dark-lg"
+            >
+            {data.recenttracks.track[0]["@attr"] &&
+            data.recenttracks.track[0]["@attr"].nowplaying == "true" ? (
+              <IoMdPlay fontSize="1.5rem" />
+            ) : (
+              <IoMdPause fontSize="1.5rem" />
+            )}
+            </Flex>
             <Image
               minH="64"
               h="40vh"
@@ -121,5 +149,9 @@ export const LastFmCard = (props: FlexProps) => {
       </SlideFade>
     </Center>
   );
+};
+
+LastFmCard.getInitialProps = ({ query }) => {
+  return { query };
 };
 export default LastFmCard;
