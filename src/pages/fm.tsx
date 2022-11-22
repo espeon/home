@@ -1,6 +1,5 @@
 import {
   Flex,
-  FlexProps,
   Box,
   Text,
   Image,
@@ -88,8 +87,6 @@ export const LastFmCard = ({ query }) => {
               mt="2"
               h="10"
               w="14"
-              borderEndRadius="lg"
-              opacity="0.8"
               justifyContent="center"
               alignItems="center"
             >
