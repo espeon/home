@@ -1,11 +1,4 @@
-import {
-  Flex,
-  Box,
-  Text,
-  Image,
-  SlideFade,
-  Center,
-} from "@chakra-ui/react";
+import { Flex, Box, Text, Image, SlideFade, Center } from "@chakra-ui/react";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { IoMdPause, IoMdPlay } from "react-icons/io";
@@ -18,47 +11,38 @@ function fetcher(url) {
 
 // don't worry, this isn't supposed to be secret!
 const FM_KEY = "6f5ff9d828991a85bd78449a85548586";
-const MAIN = "kanb"
+const MAIN = "kanb";
 
 export const LastFmCard = () => {
   let router = useRouter();
-  let query = router.query
+  let query = router.query;
   if (typeof window === "undefined") return null;
   let [url, setUrl] = useState({
     user: null,
-    load: false,
-    url: null
+    url: null,
   });
+
+  let [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
     console.log("loaded");
     setUrl((url) => ({
-      load: true,
       user: query.user,
       url: query.user
-      ? `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${query.user}&api_key=${FM_KEY}&length=1&format=json`
-      : `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=kanb&api_key=${FM_KEY}&length=1&format=json`
+        ? `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${query.user}&api_key=${FM_KEY}&limit=1&format=json`
+        : `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=kanb&api_key=${FM_KEY}&limit=1&format=json`,
     }));
   }, [router.isReady]);
 
+  console.log(url.user, url.url);
 
-  console.log(url.load, url.user, url.url);
+  const fm_url = () => {
+    return url.url
+  }
 
-  const { data, error } = useSWR(url.url, fetcher, {
+  const { data, error } = useSWR(fm_url(), fetcher, {
     refreshInterval: 25000,
   });
-
-  useEffect(() => {
-    console.log("loaded");
-    if (!url.user) {
-      console.log("set to balls")
-      setUrl((url) => ({
-        load: true,
-        url: `https://92dcf4e8-4bd6-4a9e-a84b-9dd3987a599a.id.repl.co/api/fm/`,
-        user: url.user
-      }));
-    }
-  }, [data]);
 
   if (error) return null;
 
@@ -95,7 +79,7 @@ export const LastFmCard = () => {
       <SlideFade in={data}>
         <Flex>
           <Box alignContent="center" position="relative">
-          <Flex
+            <Flex
               position="absolute"
               mt="2"
               h="10"
@@ -103,12 +87,12 @@ export const LastFmCard = () => {
               justifyContent="center"
               alignItems="center"
             >
-            {data.recenttracks.track[0]["@attr"] &&
-            data.recenttracks.track[0]["@attr"].nowplaying == "true" ? (
-              <IoMdPlay fontSize="1.5rem" />
-            ) : (
-              <IoMdPause fontSize="1.5rem" />
-            )}
+              {data.recenttracks.track[0]["@attr"] &&
+              data.recenttracks.track[0]["@attr"].nowplaying == "true" ? (
+                <IoMdPlay fontSize="1.5rem" />
+              ) : (
+                <IoMdPause fontSize="1.5rem" />
+              )}
             </Flex>
             <Image
               minH="64"
@@ -126,28 +110,13 @@ export const LastFmCard = () => {
             direction="column"
             ml="12"
           >
-            <Text
-              fontSize="3xl"
-              mx="0"
-              mt="1"
-              w={{ base: "56vw", lg: "35vw" }}
-            >
+            <Text fontSize="3xl" mx="0" mt="1" w={{ base: "56vw", lg: "35vw" }}>
               {musictitle}
             </Text>
-            <Text
-              fontSize="3xl"
-              mx="0"
-              mt="1"
-              w={{ base: "56vw", lg: "35vw" }}
-            >
+            <Text fontSize="3xl" mx="0" mt="1" w={{ base: "56vw", lg: "35vw" }}>
               {artist}
             </Text>
-            <Text
-              fontSize="3xl"
-              mx="0"
-              mt="1"
-              w={{ base: "56vw", lg: "35vw" }}
-            >
+            <Text fontSize="3xl" mx="0" mt="1" w={{ base: "56vw", lg: "35vw" }}>
               {album}
             </Text>
           </Flex>
