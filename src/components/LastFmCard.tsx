@@ -63,9 +63,9 @@ export const LastFmCard = (props: FlexProps) => {
             >
               <Box mr="1">
                 <Link href="https://last.fm/user/kanb">
-                  <a>
-                    <FaLastfm fontSize="1.25rem" color="red" />
-                  </a>
+
+                  <FaLastfm fontSize="1.25rem" color="red" />
+
                 </Link>
               </Box>
               {data.recenttracks.track[0]["@attr"] &&

@@ -18,35 +18,48 @@ function fetcher(url) {
 
 // don't worry, this isn't supposed to be secret!
 const FM_KEY = "6f5ff9d828991a85bd78449a85548586";
+const MAIN = "kanb"
 
-const isServer = () => typeof window === `undefined`;
-
-export const LastFmCard = ({ query }) => {
+export const LastFmCard = () => {
+  let router = useRouter();
+  let query = router.query
   if (typeof window === "undefined") return null;
   let [url, setUrl] = useState({
+    user: null,
     load: false,
-    url: query.user
-      ? `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${query.user}&api_key=${FM_KEY}&length=1&format=json`
-      : `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=kanb&api_key=${FM_KEY}&length=1&format=json`,
+    url: null
   });
-  const user = query.user;
 
   useEffect(() => {
     console.log("loaded");
-    if (!query.user && !url.load) {
-      console.log("set to balls")
-      setUrl((url) => ({
-        load: true,
-        url: `https://92dcf4e8-4bd6-4a9e-a84b-9dd3987a599a.id.repl.co/api/fm/`,
-      }));
-    }
-  }, []);
+    setUrl((url) => ({
+      load: true,
+      user: query.user,
+      url: query.user
+      ? `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${query.user}&api_key=${FM_KEY}&length=1&format=json`
+      : `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=kanb&api_key=${FM_KEY}&length=1&format=json`
+    }));
+  }, [router.isReady]);
 
-  console.log(url.load, user, url.url);
+
+  console.log(url.load, url.user, url.url);
 
   const { data, error } = useSWR(url.url, fetcher, {
     refreshInterval: 25000,
   });
+
+  useEffect(() => {
+    console.log("loaded");
+    if (!url.user) {
+      console.log("set to balls")
+      setUrl((url) => ({
+        load: true,
+        url: `https://92dcf4e8-4bd6-4a9e-a84b-9dd3987a599a.id.repl.co/api/fm/`,
+        user: url.user
+      }));
+    }
+  }, [data]);
+
   if (error) return null;
 
   if (data == undefined) return null;
@@ -118,7 +131,6 @@ export const LastFmCard = ({ query }) => {
               mx="0"
               mt="1"
               w={{ base: "56vw", lg: "35vw" }}
-              isTruncated
             >
               {musictitle}
             </Text>
@@ -127,7 +139,6 @@ export const LastFmCard = ({ query }) => {
               mx="0"
               mt="1"
               w={{ base: "56vw", lg: "35vw" }}
-              isTruncated
             >
               {artist}
             </Text>
@@ -136,7 +147,6 @@ export const LastFmCard = ({ query }) => {
               mx="0"
               mt="1"
               w={{ base: "56vw", lg: "35vw" }}
-              isTruncated
             >
               {album}
             </Text>
@@ -145,9 +155,5 @@ export const LastFmCard = ({ query }) => {
       </SlideFade>
     </Center>
   );
-};
-
-LastFmCard.getInitialProps = ({ query }) => {
-  return { query };
 };
 export default LastFmCard;
