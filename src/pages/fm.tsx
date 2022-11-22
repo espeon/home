@@ -92,7 +92,6 @@ export const LastFmCard = ({ query }) => {
               opacity="0.8"
               justifyContent="center"
               alignItems="center"
-              boxShadow="dark-lg"
             >
             {data.recenttracks.track[0]["@attr"] &&
             data.recenttracks.track[0]["@attr"].nowplaying == "true" ? (
