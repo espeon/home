@@ -9,7 +9,7 @@ import {
   Spacer,
   SlideFade,
   Center,
-  Button
+  Button,
 } from "@chakra-ui/react";
 import { FaLastfm } from "react-icons/fa";
 import useSWR from "swr";
@@ -22,7 +22,7 @@ function fetcher(url) {
 }
 
 export const LastFmCard = (props: FlexProps) => {
-  let [dumb, setDumb] = useState({count: 0, data: []})
+  let [dumb, setDumb] = useState({ count: 0, data: [] });
   const { data, error } = useSWR(
     `https://92dcf4e8-4bd6-4a9e-a84b-9dd3987a599a.id.repl.co/api/fm/`,
     fetcher,
@@ -37,6 +37,7 @@ export const LastFmCard = (props: FlexProps) => {
   const artist = data && data.recenttracks.track[0].artist["#text"];
   const album = data && data.recenttracks.track[0].album["#text"];
   let musictitle = data && data.recenttracks.track[0].name;
+  let bk_cover = data && data.recenttracks.track[0].image[1]["#text"];
   let cover =
     data &&
     data.recenttracks.track[0].image[
@@ -54,9 +55,7 @@ export const LastFmCard = (props: FlexProps) => {
               minW="40vh"
               borderRadius="lg"
               boxShadow="dark-lg"
-              src={`https://pcdn.piiojs.com/i/demo/wp,1,bhc,1,vw,560,vh,560/${encodeURIComponent(
-                cover
-              )}`}
+              src={cover}
             />
           </Box>
           <Flex
@@ -92,7 +91,6 @@ export const LastFmCard = (props: FlexProps) => {
             >
               {album}
             </Text>
-
           </Flex>
         </Flex>
       </SlideFade>
