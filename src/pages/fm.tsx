@@ -1,38 +1,56 @@
 import {
   Flex,
-  useColorModeValue,
   FlexProps,
   Box,
   Text,
-  Heading,
   Image,
-  Spacer,
   SlideFade,
   Center,
-  Button,
 } from "@chakra-ui/react";
-import { FaLastfm } from "react-icons/fa";
 import useSWR from "swr";
-import Link from "next/link";
-import { IoMdPlay, IoMdPause } from "react-icons/io";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { IoMdPause, IoMdPlay } from "react-icons/io";
+import { useEffect, useState } from "react";
 
 function fetcher(url) {
   return fetch(url).then((r) => r.json());
 }
 
+// don't worry, this isn't supposed to be secret!
+const FM_KEY = "6f5ff9d828991a85bd78449a85548586";
+
+const isServer = () => typeof window === `undefined`;
+
 export const LastFmCard = (props: FlexProps) => {
-  let [dumb, setDumb] = useState({ count: 0, data: [] });
-  const { data, error } = useSWR(
-    `https://92dcf4e8-4bd6-4a9e-a84b-9dd3987a599a.id.repl.co/api/fm/`,
-    fetcher,
-    {
-      refreshInterval: 25000,
-    }
-  );
+  if(typeof window === "undefined") return null;
+  const { query } = useRouter();
+  let [url, setUrl] = useState({load: false, url: query.user?`http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${query.user}&api_key=${FM_KEY}&length=1&format=json`:"https://92dcf4e8-4bd6-4a9e-a84b-9dd3987a599a.id.repl.co/api/fm/"})
+  const user = query.user
+
+  useEffect(()=>{
+    setUrl((url) => ({load:true, url: `http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${query.user}&api_key=${FM_KEY}&length=1&format=json`, ...url}));
+  }, [])
+
+  console.log(url.load, user)
+
+  const { data, error } = useSWR(url.url, fetcher, {
+    refreshInterval: 25000,
+  });
   if (error) return null;
 
   if (data == undefined) return null;
+
+  if (data.error)
+    return (
+      <Center height="99vh">
+        <Flex direction="column">
+        <Center>
+        <Image src="https://www.last.fm/static/images/marvin.05ccf89325af.png" maxW="10vw" mr={10} />
+        </Center>
+        <Text fontSize="3xl">last.fm user not found.</Text>
+        </Flex>
+      </Center>
+    );
 
   const artist = data && data.recenttracks.track[0].artist["#text"];
   const album = data && data.recenttracks.track[0].album["#text"];
@@ -49,6 +67,12 @@ export const LastFmCard = (props: FlexProps) => {
       <SlideFade in={data}>
         <Flex>
           <Box alignContent="center" position="relative">
+          {data.recenttracks.track[0]["@attr"] &&
+              data.recenttracks.track[0]["@attr"].nowplaying == "true" ? (
+                <IoMdPlay fontSize="1rem" />
+              ) : (
+                <IoMdPause fontSize="1rem" />
+              )}
             <Image
               minH="64"
               h="40vh"
