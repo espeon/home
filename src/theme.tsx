@@ -2,9 +2,10 @@ import { extendTheme } from '@chakra-ui/react'
 import { createBreakpoints } from '@chakra-ui/theme-tools'
 
 const fonts = {
-  body: "\"Kumbh Sans\", Inter, \"M PLUS 1P\", system-ui, sans-serif",
-  heading: "Kumbh Sans, Georgia, serif",
-  mono: "Menlo, monospace",
+  body: "\"Plus Jakarta Sans\", Inter, system-ui, sans-serif",
+  heading: "\"Kumbh Sans\", \"Red Hat Mono\", Georgia, serif",
+  title: "\"Libre Baskerville\", \"Red Hat Mono\", Georgia, serif",
+  mono: "Menlo, \"Red Hat Mono\"",
 }
 
 const breakpoints = createBreakpoints({

@@ -1,7 +1,6 @@
 import {
   Flex,
   useColorModeValue,
-  FlexProps,
   Box,
   Text,
   Heading,
@@ -13,18 +12,31 @@ import { FaLastfm } from "react-icons/fa";
 import useSWR from "swr";
 import Link from "next/link";
 import { IoMdPlay, IoMdPause } from "react-icons/io";
+import { useEffect, useState, useRef, createRef } from "react";
+
 
 function fetcher(url) {
   return fetch(url).then((r) => r.json());
 }
 
-export const LastFmCard = (props: FlexProps) => {
+const FM_KEY = "6f5ff9d828991a85bd78449a85548586";
+const MAIN = "kanb";
+
+export const LastFmCard = (props) => {
+  let [scroll, setScroll] = useState({scroll: 0});
+
+  const onScroll = () => {
+    const scrollY = window.scrollY //Don't get confused by what's scrolling - It's not the window
+    console.log(`onScroll, window.scrollY: ${scrollY} myRef.scrollTop: ${scroll}`)
+    setScroll({
+      scroll: scrollY
+    })
+  }
+
   const { data, error } = useSWR(
-    `https://92dcf4e8-4bd6-4a9e-a84b-9dd3987a599a.id.repl.co/api/fm/`,
+    `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${MAIN}&api_key=${FM_KEY}&limit=1&format=json`,
     fetcher,
-    {
-      refreshInterval: 25000,
-    }
+    {refreshInterval: 5000,}
   );
   if (error) return null;
 
@@ -40,16 +52,17 @@ export const LastFmCard = (props: FlexProps) => {
     ]["#text"];
 
   return (
-    <SlideFade in={data}>
+    <SlideFade in={data && (props.shown??true)}>
       <Box
         w={{ base: "85vw", lg: "auto" }}
         h="24"
         bg={useColorModeValue("gray.200", "gray.800")}
         borderRadius="xl"
         boxShadow="lg"
+        onScroll = {() => console.log(window.scrollY)}
       >
         <Flex>
-          <Box alignContent="center" position="relative">
+          <Box alignContent="center">
             <Flex
               bg="gray.700"
               position="absolute"

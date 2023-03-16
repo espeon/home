@@ -2,8 +2,7 @@ import { Flex, Box, Text, Image, SlideFade, Center } from "@chakra-ui/react";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { IoMdPause, IoMdPlay } from "react-icons/io";
-import { useEffect, useState } from "react";
-import { replace } from "lodash";
+import { useEffect, useState, useRef } from "react";
 
 function fetcher(url) {
   return fetch(url).then((r) => r.json());
@@ -14,6 +13,7 @@ const FM_KEY = "6f5ff9d828991a85bd78449a85548586";
 const MAIN = "kanb";
 
 export const LastFmCard = () => {
+
   let router = useRouter();
   let query = router.query;
   if (typeof window === "undefined") return null;
@@ -22,15 +22,13 @@ export const LastFmCard = () => {
     url: null,
   });
 
-  let [hasLoaded, setHasLoaded] = useState(false);
-
   useEffect(() => {
     console.log("loaded");
     setUrl((url) => ({
       user: query.user,
       url: query.user
         ? `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${query.user}&api_key=${FM_KEY}&limit=1&format=json`
-        : `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=kanb&api_key=${FM_KEY}&limit=1&format=json`,
+        : `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${MAIN}&api_key=${FM_KEY}&limit=1&format=json`,
     }));
   }, [router.isReady]);
 
@@ -40,15 +38,31 @@ export const LastFmCard = () => {
     return url.url
   }
 
+  // SWR is a useEffect based api refreshing module
   const { data, error } = useSWR(fm_url(), fetcher, {
     refreshInterval: 25000,
   });
 
-  if (error) return null;
+  // We just give a generic-ish error for these
+  if (error) data.error = -666;
+  if (data == undefined) data.error=-666;
 
-  if (data == undefined) return null;
-
-  if (data.error)
+  if (data.error){
+    let err
+    // this should probably be done somewhere else, but I want something custom
+    // just for this page
+    switch (data.error) {
+      case -666:
+        err = "nothing was returned from the last.fm api.\nit might be down right now?"
+        break;
+      case 6:
+        err = "last.fm user not found"
+        break;
+    
+      default:
+        err = `an error happened. (code ${data.error})`
+        break;
+    }
     return (
       <Center height="99vh">
         <Flex direction="column">
@@ -59,11 +73,13 @@ export const LastFmCard = () => {
               mr={10}
             />
           </Center>
-          <Text fontSize="3xl">last.fm user not found.</Text>
+          <Text fontSize="3xl">{err}</Text>
         </Flex>
       </Center>
     );
+  }
 
+  // get data that we show
   const artist = data && data.recenttracks.track[0].artist["#text"];
   const album = data && data.recenttracks.track[0].album["#text"];
   let musictitle = data && data.recenttracks.track[0].name;
