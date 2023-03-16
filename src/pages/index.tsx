@@ -75,7 +75,7 @@ const Index = () => {
           mb={{ base: "6", lg: "0" }}
           alignItems="center"
         >
-          <HomeFooter visible={isVisible} />
+          <HomeFooter />
         </Box>
       </Container>
       <Container
