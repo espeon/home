@@ -14,12 +14,8 @@ import HomeFooter from "../components/HomeFooter";
 import Footer from "../components/Footer";
 import IconRow from "../components/IconRow";
 import { useRef } from "react";
-import { useIsVisible } from "react-is-visible";
 
 const Index = () => {
-  const homeFooterRef = useRef()
-  const isVisible = useIsVisible(homeFooterRef)
-  console.log(isVisible)
   return (
     <>
       <Container
@@ -140,7 +136,7 @@ const Index = () => {
           mb={{ base: "6", lg: "0" }}
           alignItems="center"
         >
-          <Footer ref={homeFooterRef} />
+          <Footer />
         </Box>
       </Container>
     </>
