@@ -19,7 +19,8 @@ export const LastFmCard = () => {
     url: null,
   });
 
-  let [errCode, setErrCode] = useState(0)
+  //let [errCode, setErrCode] = useState(0)
+  let errCode = 0;
 
   useEffect(() => {
     console.log("loaded");
@@ -42,29 +43,40 @@ export const LastFmCard = () => {
     refreshInterval: 25000,
   });
 
+  console.log("length", data?.recenttracks?.track.length)
+
+  if(data?.recenttracks?.track.length < 1) {
+    errCode = -665
+    console.log("-665", errCode)
+}
+
   if (data == undefined && error == undefined) return Skeleton()
   
   console.log("error", error, "| data:", data);
 
   // We just give a generic-ish error for these
-  if (error) setErrCode(-666);
+  if (error) errCode = -666;
 
-  if(data?.error) setErrCode(data?.error);
+  if(data?.error) errCode = data?.error
 
   if (errCode != 0){
+    console.log("Error code", errCode)
     let err
     // this should probably be done somewhere else, but I want something custom
     // just for this page
     switch (errCode) {
       case -666:
-        err = "nothing was returned from the last.fm api.\nit might be down right now?"
+        err = <>nothing was returned from the last.fm api.<br />it might be down right now?</>
+        break;
+      case -665:
+        err = <>this user exists, but hasn't played anything.<br />if this user is you, try playing something!</>
         break;
       case 6:
         err = "last.fm user not found"
         break;
     
       default:
-        err = `an error happened. (code ${data.error})`
+        err = `an error happened. (code ${errCode})`
         break;
     }
     return (
@@ -176,6 +188,7 @@ const Skeleton = () => {
             direction="column"
             ml={{base:"0", lg:"12"}}
             mt={{base:"12", lg:"0"}}
+            w={{ base: "56vw", lg: "35vw" }}
           >
             <ChakraSkeleton my="2"> <Text fontSize="2xl" w={{ base: "32.4vw", lg: "16.2vw" }}>
               "The End is Near"
