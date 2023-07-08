@@ -1,12 +1,10 @@
-import { Flex, Box, Text, Image, SlideFade, Center } from "@chakra-ui/react";
+import { Flex, Box, Text, Image, SlideFade, Center, SkeletonText, SkeletonCircle, Skeleton as ChakraSkeleton } from "@chakra-ui/react";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { IoMdPause, IoMdPlay } from "react-icons/io";
 import { useEffect, useState, useRef } from "react";
 
-function fetcher(url) {
-  return fetch(url).then((r) => r.json());
-}
+const fetcher = (url) => fetch(url).then((r) => r.json());
 
 // don't worry, this isn't supposed to be secret!
 const FM_KEY = "6f5ff9d828991a85bd78449a85548586";
@@ -16,11 +14,12 @@ export const LastFmCard = () => {
 
   let router = useRouter();
   let query = router.query;
-  if (typeof window === "undefined") return null;
   let [url, setUrl] = useState({
     user: null,
     url: null,
   });
+
+  let [errCode, setErrCode] = useState(0)
 
   useEffect(() => {
     console.log("loaded");
@@ -39,19 +38,24 @@ export const LastFmCard = () => {
   }
 
   // SWR is a useEffect based api refreshing module
-  const { data, error } = useSWR(fm_url(), fetcher, {
+  const { data, error, isValidating } = useSWR(fm_url(), fetcher, {
     refreshInterval: 25000,
   });
 
-  // We just give a generic-ish error for these
-  if (error) data.error = -666;
-  if (data == undefined) data.error=-666;
+  if (data == undefined && error == undefined) return Skeleton()
+  
+  console.log("error", error, "| data:", data);
 
-  if (data.error){
+  // We just give a generic-ish error for these
+  if (error) setErrCode(-666);
+
+  if(data?.error) setErrCode(data?.error);
+
+  if (errCode != 0){
     let err
     // this should probably be done somewhere else, but I want something custom
     // just for this page
-    switch (data.error) {
+    switch (errCode) {
       case -666:
         err = "nothing was returned from the last.fm api.\nit might be down right now?"
         break;
@@ -92,8 +96,7 @@ export const LastFmCard = () => {
 
   return (
     <Center height="99vh">
-      <SlideFade in={data}>
-        <Flex>
+        <Flex direction={{base: "column", lg:"row"}}>
           <Box alignContent="center" position="relative">
             <Flex
               position="absolute"
@@ -112,8 +115,10 @@ export const LastFmCard = () => {
             </Flex>
             <Image
               minH="64"
+              maxH="40vh"
               h="40vh"
               minW="40vh"
+              maxW="40vw"
               borderRadius="lg"
               boxShadow="dark-lg"
               src={cover}
@@ -124,7 +129,8 @@ export const LastFmCard = () => {
             justifyContent="center"
             alignItems="start"
             direction="column"
-            ml="12"
+            ml={{base:"0", lg:"12"}}
+            mt={{base:"12", lg:"0"}}
           >
             <Text fontSize="3xl" mx="0" mt="1" w={{ base: "56vw", lg: "35vw" }}>
               {musictitle}
@@ -137,8 +143,54 @@ export const LastFmCard = () => {
             </Text>
           </Flex>
         </Flex>
-      </SlideFade>
     </Center>
   );
 };
 export default LastFmCard;
+
+
+const Skeleton = () => {
+  return (
+    <Center height="99vh">
+        <Flex direction={{base: "column", lg:"row"}}>
+          <Box alignContent="center" position="relative">
+            <Flex
+              position="absolute"
+              mt="2"
+              h="10"
+              w="14"
+              justifyContent="center"
+              alignItems="center"
+            >
+            </Flex>
+            <SkeletonCircle
+              h="40vh"
+              w="40vh"
+              borderRadius="lg"
+              boxShadow="dark-lg"
+            />
+          </Box>
+          <Flex
+            justifyContent="center"
+            alignItems="start"
+            direction="column"
+            ml={{base:"0", lg:"12"}}
+            mt={{base:"12", lg:"0"}}
+          >
+            <ChakraSkeleton my="2"> <Text fontSize="2xl" w={{ base: "32.4vw", lg: "16.2vw" }}>
+              "The End is Near"
+              </Text>
+            </ChakraSkeleton>
+            <ChakraSkeleton my="2"> <Text fontSize="2xl" w={{ base: "32vw", lg: "16vw" }}>
+              "Phoebe Bridgers"
+              </Text>
+            </ChakraSkeleton>
+            <ChakraSkeleton my="2"> <Text fontSize="2xl" w={{ base: "24vw", lg: "13vw" }}>
+              "Punisher"
+              </Text>
+            </ChakraSkeleton>
+          </Flex>
+        </Flex>
+    </Center>
+  );
+};
