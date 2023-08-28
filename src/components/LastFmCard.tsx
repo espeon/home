@@ -94,7 +94,7 @@ export const LastFmCard = (props) => {
               minW="24"
               borderRadius="lg"
               boxShadow="lg"
-              src={`https://pcdn.piiojs.com/i/demo/wp,1,bhc,1,vw,360,vh,360/${encodeURIComponent(
+              src={`https://pcdn.nat.vg/crop?width=256&height=256&url=${encodeURIComponent(
                 cover
               )}`}
             />

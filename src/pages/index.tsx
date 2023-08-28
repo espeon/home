@@ -40,7 +40,7 @@ const Index = () => {
                 mb="4"
                 mt={{ base: "8", lg: "0" }}
                 //TODO: make image cdn
-                src="https://pcdn.piiojs.com/i/tkkjic/wp,1,bhc,1,vw,256,vh,256/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F22222885%3Fv%3D6"
+                src="https://pcdn.nat.vg/crop?width=256&height=256&url=https://avatars.githubusercontent.com/u/22222885"
               />
               <Heading
                 w="fit-content"
