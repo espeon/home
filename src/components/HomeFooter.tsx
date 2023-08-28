@@ -13,17 +13,10 @@ export const Footer = (props) => (
       w="100%"
     >
       <Spacer />
-      <Spacer />
-      <Spacer />
-      <Spacer />
-      <Spacer />
       <Link href="#about">
         <ChevronDownIcon fontSize={"2xl"} />
       </Link>
       <Spacer />
-      <Spacer />
-      <Spacer />
-      <LastFmCard shown={!props.visible} />
     </Flex>
   </Box>
 );

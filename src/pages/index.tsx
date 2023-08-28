@@ -14,6 +14,7 @@ import HomeFooter from "../components/HomeFooter";
 import Footer from "../components/Footer";
 import IconRow from "../components/IconRow";
 import { useRef } from "react";
+import LastFmCard from "../components/LastFmCard";
 
 const Index = () => {
   return (
@@ -37,7 +38,7 @@ const Index = () => {
               <Image
                 boxSize="180"
                 borderRadius="full"
-                mb="4"
+                mb="8"
                 mt={{ base: "8", lg: "0" }}
                 //TODO: make image cdn
                 src="https://pcdn.nat.vg/crop?width=256&height=256&url=https://avatars.githubusercontent.com/u/22222885"
@@ -64,6 +65,9 @@ const Index = () => {
                 <br /> find me here:
               </Text>
               <IconRow />
+              <Flex width="auto" pt="4">
+                <LastFmCard shown={true} />
+              </Flex>
             </Box>
           </Flex>
         </Center>
