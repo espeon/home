@@ -27,7 +27,7 @@ const Index = () => {
         <Box h="10%" w="85%" pt={{ base: "4", lg: "0" }}>
           <Header />
         </Box>
-        <Center height={{ base: "100%", lg: "78%" }} w="85%" maxHeight="100%">
+        <Center height={{ base: "100vh", lg: "78%" }} w="85%" maxHeight="100%">
           <Flex direction={{ base: "column", lg: "row" }}>
             <Box
               w={{ base: "85vw", lg: "40vw", xxl: "800px" }}
